@@ -1,0 +1,14 @@
+﻿<Window x:Class="App.Views.ProgressBar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:App.Views"
+        mc:Ignorable="d"
+        Title="ProgressBar" Height="267.597" Width="511.65">
+    <Grid>
+        <Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
+        <ProgressBar Minimum="0" Width="500" Height="50" Maximum="100" Name="Progress" />
+    </Grid>
+</Window>

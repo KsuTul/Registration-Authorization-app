@@ -1,66 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using App.Helpers;
+using App.Models;
+using App.ViewModels;
 
-namespace App
+namespace App.Views
 {
     /// <summary>
     /// Interaction logic for RegistrationForm.xaml
     /// </summary>
     public partial class RegistrationForm : Window
     {
-        private Person person = new Person();
-        private PersonViewModel _personViewModel;
-        public RegistrationForm()
+        private readonly PersonViewModel _personViewModel;
+        public RegistrationForm(PersonViewModel personViewModel)
         {
             InitializeComponent();
-            _personViewModel = new PersonViewModel(person);
-            DataContext = new PersonViewModel(person);
-            CityBox.ItemsSource = new List<string>()
-            {
-                "Nizhniy Novgorod",
-                "Moscow",
-                "Saint-Petersburg",
-                "Kaliningrad",
-                "Petrozavodsk",
-                "Sochi"
-            };
-                   DateOfBirthBox.SelectedDate = DateTime.UtcNow;
+            _personViewModel = personViewModel;
+            CityBox.ItemsSource = Messages.Cities;
+            DateOfBirthBox.SelectedDate = DateTime.UtcNow;
         }
 
-
-
-        private void NumberBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void TextBox_KeyDown(object sender, RoutedEventArgs routedEventArgs)
         {
-            if (_personViewModel.PhoneValidation(((TextBox) sender).Text) != null)
+
+            _personViewModel.EmptyStringValidation(((TextBox)sender).Text);
+            if ((TextBox)sender == EmailBox)
             {
-                ErrorMessage.Text = _personViewModel.PhoneValidation(((TextBox)sender).Text);
-                e.Handled = true;
+                _personViewModel.CheckEmail(((TextBox)sender).Text);
             }
 
-            //if (_personViewModel.PhoneValidation(((TextBox) sender).Text) == null)
-            //{
-            //    ErrorMessage.Text = null;
-            //    e.Handled = false;
-            //}
+            if ((TextBox)sender == NumberBox)
+            {
+                _personViewModel.CheckPhoneNumber(((TextBox)sender).Text);
+            }
+
+            if ((TextBox)sender == PasswordBox)
+            {
+                _personViewModel.CheckPassword(((TextBox)sender).Text);
+            }
         }
 
-        private void NumberBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        private void DateOfBirthBox_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
+            _personViewModel.DateOfBirthValidation(((DatePicker)sender).SelectedDate);
+        }
+
+        private void SaveBut_OnClick(object sender, RoutedEventArgs e)
+        {
+            ProgressBar progressBar = new ProgressBar();
+            progressBar.Show();
         }
     }
 }

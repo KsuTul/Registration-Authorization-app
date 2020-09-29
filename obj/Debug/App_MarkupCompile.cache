@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Xenia\Source\Workspaces\LearningProjects\Main\Source\Xenia\App\obj\Debug\
+D:\VisualStudioProjects\Main\Source\Xenia\App\obj\Debug\
 App
 none
 false
 DEBUG;TRACE
-C:\Users\Xenia\Source\Workspaces\LearningProjects\Main\Source\Xenia\App\App.xaml
-3952955971
-
-11-110183945
-231882367651
-Views\Authorization.xaml;Views\MainWindow.xaml;Views\RegistrationForm.xaml;
+D:\VisualStudioProjects\Main\Source\Xenia\App\App.xaml
+4-1148418832
+1-301770927
+211971642955
+147748839410
+Views\Authorization.xaml;Views\MainWindow.xaml;Views\ProgressBar.xaml;Views\RegistrationForm.xaml;
 
 False
 

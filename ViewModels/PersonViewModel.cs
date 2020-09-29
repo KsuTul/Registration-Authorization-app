@@ -1,37 +1,28 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using static App.AppService;
+using System.Text.RegularExpressions;
+using App.Helpers;
+using App.Mapping;
+using App.Models;
+using App.Services;
 
-namespace App
+namespace App.ViewModels
 {
     public class PersonViewModel : INotifyPropertyChanged
     {
-        private Person _person;
+        private readonly Person _person;
+        private readonly PersonService _personService;
         public event PropertyChangedEventHandler PropertyChanged;
-        private RelayCommand addCommand;
+        private RelayCommand _addCommand;
+        private string _validationMethod;
 
-        public RelayCommand AddCommand
+        public PersonViewModel(PersonService personService)
         {
-            get
-            {
-                return addCommand ??= new RelayCommand(obj =>
-                {
-                    if (_person != null)
-                    {
-                        SavePerson(_person);
-                    }
-                });
-            }
-        }
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
+           _person = new Person();
 
-        public PersonViewModel(Person person)
-        {
-            _person = person;
+           _personService = personService;
         }
 
         public string Name
@@ -42,7 +33,7 @@ namespace App
             {
                 if (_person.Name == value) return;
                 _person.Name = value;
-                OnPropertyChanged(nameof(_person.Name));
+                OnPropertyChanged();
             }
         }
 
@@ -53,7 +44,7 @@ namespace App
             {
                 if(_person.DateOfBirth == value) return;
                 _person.DateOfBirth = value;
-                OnPropertyChanged(nameof(_person.DateOfBirth));
+                OnPropertyChanged();
             }
         }
 
@@ -65,9 +56,10 @@ namespace App
             {
                 if (_person.City == value) return;
                 _person.City = value;
-                OnPropertyChanged(nameof(_person.City));
+                OnPropertyChanged();
             }
         }
+
         public string PhoneNumber
         {
             get => _person.PhoneNumber;
@@ -76,7 +68,7 @@ namespace App
             {
                 if (_person.PhoneNumber == value) return;
                 _person.PhoneNumber = value;
-                OnPropertyChanged(nameof(_person.PhoneNumber));
+                OnPropertyChanged();
             }
         }
 
@@ -88,7 +80,7 @@ namespace App
             {
                 if (_person.Email == value) return;
                 _person.Email = value;
-                OnPropertyChanged(nameof(_person.Email));
+                OnPropertyChanged();
             }
         }
         public string Password
@@ -99,21 +91,81 @@ namespace App
             {
                 if (_person.Password == value) return;
                 _person.Password = value;
-                OnPropertyChanged(nameof(_person.Password));
+                OnPropertyChanged();
             }
         }
 
-        public string PhoneValidation(string phone)
+        public string ValidationMessage
         {
-            int value;
-            if (!int.TryParse(phone, out value) && !phone.Contains("+"))
+            get => _validationMethod;
+
+            set
             {
-                return "You enter is not valid";
-
+                if (_validationMethod == value) return;
+                _validationMethod = value;
+                OnPropertyChanged();
             }
-
-            return null;
         }
 
+        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
+        public RelayCommand SavePersonCommand
+        {
+            get
+            {
+                return _addCommand ??= new RelayCommand(obj =>
+                {
+                    //var existingUser = CheckExistingUser();
+
+                    if (ValidationMessage == string.Empty)
+                    {
+                        PersonService.Insert(_person);
+                    }
+                });
+            }
+        }
+
+        public void EmptyStringValidation(string data)
+        {
+           ValidationMessage =  string.IsNullOrEmpty(data) ? Messages.ErrorMessageEmptyValue: String.Empty;
+        }
+
+        public void DateOfBirthValidation(DateTime? dateOfBirth)
+        {
+            ValidationMessage =  dateOfBirth >= DateTime.Now ? Messages.ErrorMessageForDate : String.Empty;
+        }
+
+        public void CheckPhoneNumber(string password)
+        {
+            var pattern = Messages.PhonePattern;
+            ValidationMessage = Regex.IsMatch(password, pattern, RegexOptions.IgnoreCase)
+                ? String.Empty
+                : Messages.ErrorMessageIncorrectPhone;
+        }
+
+        public void CheckEmail(string email)
+        {
+            var pattern = Messages.EmailPattern;
+           ValidationMessage =  Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase) 
+               ? String.Empty
+               : Messages.ErrorMessageIncorrectEmail;
+        }
+
+        public void CheckPassword(string password)
+        {
+            var pattern = Messages.PasswordPattern;
+            ValidationMessage =  Regex.IsMatch(password, pattern, RegexOptions.IgnoreCase)
+                ? String.Empty
+                : Messages.ErrorMessageIncorrectPassword;
+        }
+
+        public bool CheckExistingUser()
+        {
+            var people = _personService.GetAll();
+            return people.Any(x => x.Email == _person.Email);
+        }
     }
 }
