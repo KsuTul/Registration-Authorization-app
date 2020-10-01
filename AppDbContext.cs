@@ -1,17 +1,17 @@
-﻿using System.Data.Entity;
-using App.Models;
-using Microsoft.EntityFrameworkCore;
-using DbContext = System.Data.Entity.DbContext;
-
-namespace App
+﻿namespace WPF_APP
 {
+    using System.Data.Entity;
+    using WPF_APP.Models;
+    using DbContext = System.Data.Entity.DbContext;
+
     public partial class AppDbContext: DbContext
     {
         public AppDbContext(string connectionString) : base(connectionString)
         {
-            
+
         }
-        public System.Data.Entity.DbSet<Person> People { get; set; }
+
+        public DbSet<Person> People { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

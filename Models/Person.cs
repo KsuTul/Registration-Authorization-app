@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace App.Models
+﻿namespace WPF_APP.Models
 {
+    using System;
+
     public class Person
     {
         public int Id { get; set; }

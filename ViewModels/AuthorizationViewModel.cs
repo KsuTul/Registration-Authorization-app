@@ -1,79 +1,81 @@
-﻿using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using App.Helpers;
-using App.Mapping;
-using App.Models;
-using App.Services;
-
-namespace App.ViewModels
+﻿namespace WPF_APP.ViewModels
 {
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using WPF_APP.Helpers;
+    using WPF_APP.Models;
+    using WPF_APP.Services;
+
     public class AuthorizationViewModel : INotifyPropertyChanged
     {
         private readonly Person person;
-        private readonly PersonService _personService;
-        public event PropertyChangedEventHandler PropertyChanged;
-        private RelayCommand _readCommand;
-        private string message;
+        private readonly PersonService personService;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private RelayCommand readCommand;
+        private string message;
 
         public AuthorizationViewModel(PersonService personService)
         {
-            person = new Person();
+            this.person = new Person();
 
-            _personService = personService;
+            this.personService = personService;
         }
 
         public string Email
         {
-            get => person.Email;
+            get => this.person.Email;
 
             set
             {
-                if (person.Email == value) return;
-                person.Email = value;
-                OnPropertyChanged();
+                if (this.person.Email == value) return;
+                this.person.Email = value;
+                this.OnPropertyChanged();
             }
         }
+
         public string Password
         {
-            get => person.Password;
+            get => this.person.Password;
 
             set
             {
-                if (person.Password == value) return;
-                person.Password = value;
-                OnPropertyChanged();
+                if (this.person.Password == value) return;
+                this.person.Password = value;
+                this.OnPropertyChanged();
             }
         }
 
         public string Message
         {
-            get => message;
+            get => this.message;
 
             set
             {
-                if (message == value) return;
-               message = value;
-                OnPropertyChanged();
+                if (this.message == value) return;
+                this.message = value;
+                this.OnPropertyChanged();
             }
         }
 
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
         public RelayCommand ReadCommand
         {
             get
             {
-                return _readCommand ??= new RelayCommand(obj =>
+                return this.readCommand ??= new RelayCommand(obj =>
                 {
-                    if (person.Email != null && person.Password != null)
+                    if (this.person.Email != null && person.Password != null)
                     {
-                        _personService.GetAll()
-                            .Where(x => x.Email == person.Email && x.Password == person.Password);
+                        this.Message = this.personService.GetAll()
+                            .Any(x => x.Email == this.person.Email && x.Password == this.person.Password) == true ?
+                            Messages.MessageAboutExistingUser : Messages.MessageAboutRegistration;
                     }
                 });
             }

@@ -1,41 +1,42 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using App.Models;
-
-namespace App.Services
+﻿namespace WPF_APP.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using WPF_APP.Mapping;
+    using WPF_APP.Models;
+
     public class PersonService
     {
-        private static IRepository _personRepository;
+        private static IRepository personRepository;
 
         public PersonService(IRepository personRepository)
         {
-            _personRepository = personRepository;
+            PersonService.personRepository = personRepository;
         }
 
         public static void Insert(Person person)
         {
-            _personRepository.Insert(person);
+            personRepository.Insert(person);
         }
 
         public static Person GetById(int id)
         {
-            return _personRepository.GetById(id);
+            return personRepository.GetById(id);
         }
 
         public IList<Person> GetAll()
         {
-            return _personRepository.GetAll().ToList();
+            return personRepository.GetAll().ToList();
         }
 
         public void Update(Person person)
         {
-            _personRepository.Update(person);
+            personRepository.Update(person);
         }
 
         public void Remove(int id)
         {
-            _personRepository.Remove(id);
+            personRepository.Remove(id);
         }
 
     }

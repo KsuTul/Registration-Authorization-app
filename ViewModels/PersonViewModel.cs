@@ -1,128 +1,165 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using App.Helpers;
-using App.Mapping;
-using App.Models;
-using App.Services;
-
-namespace App.ViewModels
+﻿namespace WPF_APP.ViewModels
 {
+    using System;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using System.Text.RegularExpressions;
+    using WPF_APP.Helpers;
+    using WPF_APP.Models;
+    using WPF_APP.Services;
+
     public class PersonViewModel : INotifyPropertyChanged
     {
-        private readonly Person _person;
-        private readonly PersonService _personService;
+        private readonly Person person;
+        private readonly PersonService personService;
+
         public event PropertyChangedEventHandler PropertyChanged;
-        private RelayCommand _addCommand;
-        private string _validationMethod;
+
+        private RelayCommand addCommand;
+        private string validationMethod;
 
         public PersonViewModel(PersonService personService)
         {
-           _person = new Person();
+            this.person = new Person();
 
-           _personService = personService;
+            this.personService = personService;
         }
 
         public string Name
         {
-            get => _person.Name;
+            get => this.person.Name;
 
             set
             {
-                if (_person.Name == value) return;
-                _person.Name = value;
-                OnPropertyChanged();
+                if (this.person.Name == value)
+                {
+                    return;
+                }
+
+                this.person.Name = value;
+                this.OnPropertyChanged();
             }
         }
 
         public DateTime DateOfBirth
         {
-            get => _person.DateOfBirth;
+            get => this.person.DateOfBirth;
             set
             {
-                if(_person.DateOfBirth == value) return;
-                _person.DateOfBirth = value;
-                OnPropertyChanged();
+                if (this.person.DateOfBirth == value)
+                {
+                    return;
+                }
+
+                this.person.DateOfBirth = value;
+                this.OnPropertyChanged();
             }
         }
 
         public string City
         {
-            get => _person.City;
+            get => this.person.City;
 
             set
             {
-                if (_person.City == value) return;
-                _person.City = value;
-                OnPropertyChanged();
+                if (this.person.City == value)
+                {
+                    return;
+                }
+
+                this.person.City = value;
+                this.OnPropertyChanged();
             }
         }
 
         public string PhoneNumber
         {
-            get => _person.PhoneNumber;
+            get => this.person.PhoneNumber;
 
             set
             {
-                if (_person.PhoneNumber == value) return;
-                _person.PhoneNumber = value;
-                OnPropertyChanged();
+                if (this.person.PhoneNumber == value)
+                {
+                    return;
+                }
+
+                this.person.PhoneNumber = value;
+                this.OnPropertyChanged();
             }
         }
 
         public string Email
         {
-            get => _person.Email;
+            get => this.person.Email;
 
             set
             {
-                if (_person.Email == value) return;
-                _person.Email = value;
-                OnPropertyChanged();
+                if (this.person.Email == value)
+                {
+                    return;
+                }
+
+                this.person.Email = value;
+                this.OnPropertyChanged();
             }
         }
+
         public string Password
         {
-            get => _person.Password;
+            get => this.person.Password;
 
             set
             {
-                if (_person.Password == value) return;
-                _person.Password = value;
-                OnPropertyChanged();
+                if (this.person.Password == value)
+                {
+                    return;
+                }
+
+                this.person.Password = value;
+                this.OnPropertyChanged();
             }
         }
 
         public string ValidationMessage
         {
-            get => _validationMethod;
+            get => this.validationMethod;
 
             set
             {
-                if (_validationMethod == value) return;
-                _validationMethod = value;
-                OnPropertyChanged();
+                if (this.validationMethod == value)
+                {
+                    return;
+                }
+
+                this.validationMethod = value;
+                this.OnPropertyChanged();
             }
         }
 
+        public string MessageForUser { get; set; }
+
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
         public RelayCommand SavePersonCommand
         {
             get
             {
-                return _addCommand ??= new RelayCommand(obj =>
+                return this.addCommand ??= new RelayCommand(obj =>
                 {
-                    //var existingUser = CheckExistingUser();
-
-                    if (ValidationMessage == string.Empty)
+                    var existingUser = this.CheckExistingUser();
+                    if (existingUser == true)
                     {
-                        PersonService.Insert(_person);
+                        this.MessageForUser = Messages.MessageAboutHavingAccount;
+                    }
+
+                    if (this.ValidationMessage == string.Empty && existingUser == false)
+                    {
+                        PersonService.Insert(this.person);
+                        this.MessageForUser = Messages.MessageAboutSuccessRegistration;
                     }
                 });
             }
@@ -130,42 +167,42 @@ namespace App.ViewModels
 
         public void EmptyStringValidation(string data)
         {
-           ValidationMessage =  string.IsNullOrEmpty(data) ? Messages.ErrorMessageEmptyValue: String.Empty;
+            this.ValidationMessage = string.IsNullOrEmpty(data) ? Messages.ErrorMessageEmptyValue : string.Empty;
         }
 
         public void DateOfBirthValidation(DateTime? dateOfBirth)
         {
-            ValidationMessage =  dateOfBirth >= DateTime.Now ? Messages.ErrorMessageForDate : String.Empty;
+            this.ValidationMessage = dateOfBirth >= DateTime.Now ? Messages.ErrorMessageForDate : string.Empty;
         }
 
         public void CheckPhoneNumber(string password)
         {
             var pattern = Messages.PhonePattern;
-            ValidationMessage = Regex.IsMatch(password, pattern, RegexOptions.IgnoreCase)
-                ? String.Empty
+            this.ValidationMessage = Regex.IsMatch(password, pattern, RegexOptions.IgnoreCase)
+                ? string.Empty
                 : Messages.ErrorMessageIncorrectPhone;
         }
 
         public void CheckEmail(string email)
         {
             var pattern = Messages.EmailPattern;
-           ValidationMessage =  Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase) 
-               ? String.Empty
+            this.ValidationMessage = Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase) 
+               ? string.Empty
                : Messages.ErrorMessageIncorrectEmail;
         }
 
         public void CheckPassword(string password)
         {
             var pattern = Messages.PasswordPattern;
-            ValidationMessage =  Regex.IsMatch(password, pattern, RegexOptions.IgnoreCase)
-                ? String.Empty
+            this.ValidationMessage = Regex.IsMatch(password, pattern, RegexOptions.IgnoreCase)
+                ? string.Empty
                 : Messages.ErrorMessageIncorrectPassword;
         }
 
         public bool CheckExistingUser()
         {
-            var people = _personService.GetAll();
-            return people.Any(x => x.Email == _person.Email);
+            var people = personService.GetAll();
+            return people.Any(x => x.Email == this.person.Email);
         }
     }
 }

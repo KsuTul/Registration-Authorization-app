@@ -20,6 +20,8 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Label Grid.Row="0" x:Name="Name" Content="Name" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Aquamarine" ></Label>
         <TextBox Grid.Row="0" Grid.Column="1" x:Name="NameBox" Text="{Binding Name, UpdateSourceTrigger=LostFocus}" Height="25" Width="250" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" LostFocus="TextBox_KeyDown" ></TextBox>
@@ -39,6 +41,7 @@
         <DockPanel Grid.Row="8" Grid.ColumnSpan="2" Grid.Column="0">
             <TextBlock DockPanel.Dock="Bottom" x:Name="ErrorMessage"  FontSize="20" Foreground="Red" Text="{Binding ValidationMessage}"></TextBlock>
         </DockPanel>
+        <ProgressBar  Grid.Row="9" Grid.ColumnSpan="2" Grid.Column="0" Minimum="0" Height="35" Maximum="100" Name="Progress" Background="Black" BorderBrush="Black" BorderThickness="1" />
     </Grid>
 </Window>
    

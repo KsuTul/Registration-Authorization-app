@@ -1,33 +1,32 @@
-﻿using System.IO;
-using System.Windows;
-
-
-namespace App.Views
+﻿namespace App.Views
 {
+    using System.Windows;
+
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml.
     /// </summary>
     public partial class MainWindow : Window
     {
-        private RegistrationForm _registration;
-        private Authorization _authorizationForm;
+        private readonly RegistrationForm registration;
+        private readonly Authorization authorizationForm;
+
         public MainWindow(RegistrationForm registration,Authorization authorization)
         {
-            InitializeComponent();
-            _registration = registration;
-            _authorizationForm = authorization;
+            this.InitializeComponent();
+            this.registration = registration;
+            this.authorizationForm = authorization;
 
         }
 
         private void RegButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _registration.Show();
+            this.registration.Show();
 
         }
 
         private void AuthoButton_OnClickButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _authorizationForm.Show();
+            this.authorizationForm.Show();
         }
     }
 }

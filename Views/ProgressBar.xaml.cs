@@ -14,6 +14,7 @@ namespace App.Views
             InitializeComponent();
             Window_ContentRendered();
         }
+
         private void Window_ContentRendered()
         {
             var worker = new BackgroundWorker {WorkerReportsProgress = true};
@@ -31,12 +32,13 @@ namespace App.Views
                 (sender as BackgroundWorker)?.ReportProgress(i);
                 Thread.Sleep(50);
             }
+
             MessageBox.Show(" You are with us!");
         }
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Progress.Value = e.ProgressPercentage;
+            this.Progress.Value = e.ProgressPercentage;
         }
     }
 }

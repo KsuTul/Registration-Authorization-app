@@ -1,20 +1,21 @@
-﻿using System.IO.Packaging;
-using App.Mapping;
-
-namespace App
+﻿namespace App
 {
+    using System.IO.Packaging;
+    using WPF_APP;
+    using WPF_APP.Mapping;
+
     public class AppDbContextFactory: IAppDbContextFactory
     {
         public AppDbContextFactory(string connectionString)
         {
-            ConnectionString = connectionString;
+            this.ConnectionString = connectionString;
         }
 
         public string ConnectionString { get; set; }
 
         public AppDbContext Create()
         {
-            return new AppDbContext(ConnectionString);
+            return new AppDbContext(this.ConnectionString);
         }
 
     }

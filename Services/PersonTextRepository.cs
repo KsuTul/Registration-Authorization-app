@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using App.Helpers;
-using App.Models;
-
-namespace App.Services
+﻿namespace WPF_App.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text.Json;
+    using WPF_APP.Helpers;
+    using WPF_APP.Mapping;
+    using WPF_APP.Models;
+
      public class PersonTextRepository : IRepository
      {
          private static readonly List<Person> Persons = new List<Person>();
@@ -24,16 +25,16 @@ namespace App.Services
                      : "Please, registrate!";
              }
 
-             throw new Exception(Messages.ExceptionMessage);
+             throw new Exception();
          }
 
          public void Insert(Person person)
          {
-             _jsonFile = JsonSerializer.Serialize<Person>(person, new JsonSerializerOptions());
-                 using var stream = new StreamWriter(path, true);
-                 {
-                     stream.WriteLineAsync(_jsonFile);
-                 }
+             _jsonFile = JsonSerializer.Serialize<Person>(person, new JsonSerializerOptions()); 
+             using var stream = new StreamWriter(path, true);
+             {
+                 stream.WriteLineAsync(_jsonFile);
+             }
          }
 
          public Person GetById(int id)
@@ -60,7 +61,7 @@ namespace App.Services
          {
              using var read = new StreamReader(path, true);
              {
-                 var line = "";
+                 string line;
                  while ((line = read.ReadLine()) != null)
                  {
                      Persons.Add(JsonSerializer.Deserialize<Person>(line, new JsonSerializerOptions()));

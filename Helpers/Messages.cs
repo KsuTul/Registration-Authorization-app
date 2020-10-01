@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace App.Helpers
+﻿namespace WPF_APP.Helpers
 {
+    using System.Collections.Generic;
+
     public static class Messages
     {
         public static string EmailPattern = @"^([a-zA-Z0-9])*(\.|[a-zA-Z0-9])*\@{1}([a-zA-Z])*(\.[a-z]+)";
@@ -28,9 +24,13 @@ namespace App.Helpers
 
         public static string MessageAboutExistingUser = "This user exist";
 
-        public static string MessageAboutRegistration = "Please do a registration";
+        public static string MessageAboutRegistration = "Please, registrate";
 
-        public static string ExceptionMessage = "Not a valid data";
+        public static string MessageAboutSuccessRegistration = "You are with us!";
+
+        public static string MessageAboutUnSuccessRegistration = "Sorry, something go wrong. Please check data";
+
+        public static string MessageAboutHavingAccount = "You have already registrated";
 
         public static List<string> Cities = new List<string>()
         {

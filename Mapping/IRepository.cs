@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using App.Models;
-
-namespace App
+﻿namespace WPF_APP.Mapping
 {
+    using System.Collections.Generic;
+    using WPF_APP.Models;
+
     public interface IRepository
     {
         void Insert(Person person);

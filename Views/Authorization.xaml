@@ -13,11 +13,13 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Label x:Name="EmailLabel" Content="Email" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Aquamarine"></Label>
         <Label x:Name="PasswordLabel" Grid.Row="2" Content="Password" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="Aquamarine"></Label>
-        <TextBox x:Name="Email" Grid.Row="1" Width="300" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Email, UpdateSourceTrigger=LostFocus}"></TextBox>
-        <TextBox x:Name="Password" Grid.Row="3" Width="300" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Password, UpdateSourceTrigger=LostFocus}"></TextBox>
+        <TextBox x:Name="Email" Grid.Row="1" Width="300" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Email, UpdateSourceTrigger=LostFocus}"></TextBox>
+        <TextBox x:Name="Password" Grid.Row="3" Width="300" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Password, UpdateSourceTrigger=LostFocus}"></TextBox>
+        <TextBlock x:Name="ErrorMessage" Grid.Row="5"   FontSize="20" Foreground="Red" Text="{Binding Message}"></TextBlock>
         <Button Grid.Row="4"  Command="{ Binding ReadCommand}" Grid.Column="0" x:Name="ReadBut" Content="Sighn in" Width="100" Height="50" Background="Aquamarine" FontSize="20"></Button>
     </Grid>
 </Window>
